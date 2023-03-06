@@ -7,7 +7,7 @@ It consists in (re-)discovering Forbidden Minors for Threewidth, through a serie
 // Empty.
 
 ### Version Log
-V1. Build the inital structure of the project.
+V1. Build the inital structure of the project.\
 V2.
 
 ## LICENSE
