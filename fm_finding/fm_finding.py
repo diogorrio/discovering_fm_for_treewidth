@@ -15,6 +15,7 @@ class FMFinding:
 
     # All these methods might justify their own class, if I decide to have different ones to compare
     def tree_decompose(self):
+        print("Format working as", self.min_nr_minors)
         return self
 
     def recursive_construction(self):
