@@ -7,8 +7,9 @@ It consists in (re-)discovering Forbidden Minors for Threewidth, through a serie
 // Empty.
 
 ### Version Log
-V1. Build the inital structure of the project.\
-V2.
+V1. Build the initial structure of the project.\
+V2. List possible approaches to finding the forbidden minors.\
+V3.
 
 ## LICENSE
 See [LICENSE](LICENSE).
