@@ -1,7 +1,14 @@
 from fm_finding.fm_finding import FMFinding
+from graph_data.db_structure import create_db, create_table
 
 
 def main():
+    # Load database
+    # TODO: Handle the 'access denied' issue
+    create_db('forbidden_minors', 'localhost', 'root', 'admin')
+    #create_table('fm_in_f4', 'forbidden_minors', 'localhost', 'root', 'admin')
+    #create_table('fm_in_f5', 'forbidden_minors', 'localhost', 'root', 'admin')
+
     # Load graph data
 
     # Find forbidden minors through various techniques; create object and use different methods
@@ -11,6 +18,7 @@ def main():
     # For f(5)
     fm_f5 = FMFinding("f5")
     fm_f5.tree_decompose()
+
     # Check for "exhaustivity"
 
 
