@@ -8,7 +8,7 @@ class FMFinding:
         if self.fm_type == "f4":
             self.min_nr_minors = 90
             self.max_nr_minors = 100
-        # TODO: TBD: nr_minors
+        # TODO: TBD: nr_minors in f5
         elif self.fm_type == "f5":
             self.min_nr_minors = 0
             self.max_nr_minors = 0
