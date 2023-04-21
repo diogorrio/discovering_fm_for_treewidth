@@ -1,15 +1,17 @@
+import getpass
+
 from fm_finding.fm_finding import FMFinding
 from graph_data.db_structure import create_db, create_table
 
 
 def main():
     # Load database
-    # TODO: Handle the 'access denied' issue
-    create_db('forbidden_minors', 'localhost', 'root', 'admin')
-    #create_table('fm_in_f4', 'forbidden_minors', 'localhost', 'root', 'admin')
-    #create_table('fm_in_f5', 'forbidden_minors', 'localhost', 'root', 'admin')
+    password = getpass.getpass("Please insert the server password: ")
+    create_db('forbidden_minors', 'localhost', 'root', password)
+    create_table('fm_in_f4', 'forbidden_minors', 'localhost', 'root', password)
+    create_table('fm_in_f5', 'forbidden_minors', 'localhost', 'root', password)
 
-    # Load graph data
+    # TODO: Load graph data
 
     # Find forbidden minors through various techniques; create object and use different methods
     # For f(4)
