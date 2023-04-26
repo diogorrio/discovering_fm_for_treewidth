@@ -21,7 +21,7 @@ def main():
     fm_f5 = FMFinding("f5")
     fm_f5.tree_decompose()
 
-    # Check for "exhaustivity"
+    # Check for exhaustiveness
 
 
 main()
