@@ -16,7 +16,7 @@ def create_db(db_name, host, user, password):
     cursor.execute(f"CREATE DATABASE IF NOT EXISTS {db_name}")
 
     db.close()
-    return f"Database '{db_name}' has been created."
+    print(f"Database '{db_name}' has been created.")
 
 
 def create_table(table_name, db_name, host, user, password):
@@ -35,7 +35,7 @@ def create_table(table_name, db_name, host, user, password):
     db.commit()
     db.close()
 
-    return f"Table '{table_name}' has been created."
+    print(f"Table '{table_name}' has been created.")
 
 
 def insert_fm(minor, table_name, db_name, host, user, password):
@@ -53,4 +53,4 @@ def insert_fm(minor, table_name, db_name, host, user, password):
     db.commit()
     db.close()
 
-    return f"Minor '{minor}' has been inserted into '{table_name}'."
+    print(f"Minor '{minor}' has been inserted into '{table_name}'.")
