@@ -10,7 +10,8 @@ It consists in (re-)discovering Forbidden Minors for Threewidth, through a serie
 V1. Build the initial structure of the project.\
 V2. List possible approaches to finding the forbidden minors.\
 V3. Implementation of MySQL database structure and functions.\
-V4.
+V4. Synced the thesis report under documents.\
+V5. 
 
 ## LICENSE
 See [LICENSE](LICENSE).
