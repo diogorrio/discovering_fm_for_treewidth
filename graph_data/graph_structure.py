@@ -1,38 +1,120 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+import numpy as np
 
-# Class for handling own graphs, using the NetworkX package
-# TODO Ask if this is allowed or if I have to create my own graph class
 
-G = nx.Graph()
+# Manual connected graph generation, based on sketch codes from @khakhalin
 
-# Manual creation
-G.add_node('A')
-G.add_node('B')
-G.add_node('C')
-G.add_node('D')
+# Generate the graph recursively, by including or skipping each edge (lexicographical order by construction)
+# Issue with this method is that this brute force approach takes exponential time,
+# which increases by 2 to the power of n-1 with each vertex increase
+def make_graphs(n=2, i=None, j=None):
+    graph = []
+    if i is None:
+        graph = [[(0, 1)] + r for r in make_graphs(n=n, i=0, j=1)]
+    elif j < n - 1:
+        graph += [[(i, j + 1)] + r for r in make_graphs(n=n, i=i, j=j + 1)]
+        graph += [r for r in make_graphs(n=n, i=i, j=j + 1)]
+    elif i < n - 1:
+        graph = make_graphs(n=n, i=i + 1, j=i + 1)
+    else:
+        graph = [[]]
 
-G.add_edge('A', 'B')
-G.add_edge('B', 'C')
+    return graph
 
-pos = nx.spring_layout(G)
-nx.draw(G, pos, with_labels=True)
-plt.show()
 
-# -----------------------------------------
+# This lists all possible isomorphic codes for a graph as tuples (edges are i<j, sorted lexicographically)
+def permute(g, n):
+    ps = all_perm(n)
+    out = set([])
+    for p in ps:
+        out.add(tuple(sorted([(p[i], p[j]) if p[i] < p[j]
+                              else (p[j], p[i]) for i, j in g])))
+    return list(out)
+
+
+def all_perm(n, s=None):
+    if s is None:
+        return all_perm(n, tuple(range(n)))
+    if not s:
+        return [[]]
+    return [[i]+p for i in s for p in all_perm(n, tuple([k for k in s if k != i]))]
+
+
+def is_connected(g):
+    nodes = set([i for e in g for i in e])
+    roots = {node: node for node in nodes}
+
+    # Union finding
+    def _root(node, depth=0):
+        if node == roots[node]:
+            return node, depth
+        else:
+            return _root(roots[node], depth + 1)
+
+    for i, j in g:
+        ri, di = _root(i)
+        rj, dj = _root(j)
+        if ri == rj:
+            continue
+        if di <= dj:
+            roots[ri] = rj
+        else:
+            roots[rj] = ri
+
+    return len(set([_root(node)[0] for node in nodes])) == 1
+
+
+# Select solely the proper graphs, i.e., connected, non-isomorphic and with the right # of vertices
+def select(gs, target_nr_vertices):
+    mem = set({})
+    gs2 = []
+    for g in gs:
+        nv = len(set([i for e in g for i in e]))
+        if nv != target_nr_vertices:
+            continue
+        if not is_connected(g):
+            continue
+        if tuple(g) not in mem:
+            gs2.append(g)
+            mem |= set(permute(g, target_nr_vertices))
+    return gs2
+
+
+def draw_graphs(graphs):
+
+    for graph in graphs:
+        print(graph)
+
+        # Convert a graph with edge information into a NetworkX object - in order to be drawn
+        n_graph = nx.Graph()
+        n_graph.add_edges_from(graph)
+
+        pos = nx.spring_layout(n_graph)
+        nx.draw(n_graph, pos, with_labels=True)
+        plt.show()
+
+
+# Testing the graph generation
+nr_vertices = 4
+gen_graphs = make_graphs(nr_vertices)
+gen_graphs = select(gen_graphs, nr_vertices)
+draw_graphs(gen_graphs)
+
+"""
 # Random creation
 G = nx.erdos_renyi_graph(20, 0.4)
 
-# Define the forbidden minor
+# Define the forbidden minor K3
 H = nx.complete_graph(3)
 
 # Check if the graph contains the forbidden minor
 if nx.subgraph(G, list(H.nodes())).number_of_edges() == H.number_of_edges():
     print("Found a forbidden minor!")
 
-    # TODO: Take this away from here, but an e.g. on how to add an adjacency matrix to the db
     # Adjacency matrix (or whatever format I end up using) to a string format
-    # a_m = np.array([[0, 0, 1], [1, 1, 0], [1, 0, 0]])
-    # insert_fm(a_m, 'fm_in_f4', 'forbidden_minors', 'local_host', 'admin', 'admin')
+    a_m = np.array([[0, 0, 1], [1, 1, 0], [1, 0, 0]])
+    insert_fm(a_m, 'fm_in_f4', 'forbidden_minors', 'local_host', 'admin', 'admin')
 else:
     print("No forbidden minor found.")
+"""
