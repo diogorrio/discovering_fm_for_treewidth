@@ -130,8 +130,9 @@ def is_mfm(graph, tw):
 
 
 # Script
-nr_vertices = 5
-threewidth = 3
+nr_vertices = 6
+# For F(n), the tw has to be n+1
+threewidth = 4
 all_graphs = gen_connected_graphs_up_to(nr_vertices)
 min_forbidden_minors = find_minimal_forbidden_minors(all_graphs, threewidth)
 
