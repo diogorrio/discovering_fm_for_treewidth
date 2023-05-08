@@ -1,9 +1,10 @@
 import numpy as np
 import networkx as nx
 from itertools import combinations
+import matplotlib.pyplot as plt
 from networkx.algorithms.approximation import treewidth_min_fill_in
 from networkx.algorithms.minors import contracted_edge
-import matplotlib.pyplot as plt
+from graph_data.graph_structure import *
 
 """
 - HOW FAR IS A GRAPH FROM A BEING A TREE? -
@@ -39,6 +40,9 @@ Some random, possibly useful theory notes:
         (the -1 part has to do with the fact that trees should have tw 1)
     5. If H is a minor of G, then tw(H) <= tw(G)
     6. ...  
+    (7. Should the degree of each one of the vertices be larger or equal to the actual tw we're looking for?)
+    (8. Do all the vertices have to have the same degree as all the others?)
+    (9. ...)
 """
 
 
@@ -72,9 +76,12 @@ class FMFinding:
 # For n=[0,+oo], n being the # of vertices:
 # 1, 1, 1, 2, 6, 21, 112, ... (see https://oeis.org/A001349/list)
 def gen_connected_graphs_up_to(max_nr_vertices):
-    gen_graphs = []
 
-    # Empty
+    gen_graphs = make_graphs(max_nr_vertices)
+    gen_graphs = select(gen_graphs, max_nr_vertices)
+    draw_graphs(gen_graphs)
+
+    print("Found", len(gen_graphs), "distinct connected graphs with", nr_vertices, "vertices.")
 
     return gen_graphs
 
@@ -85,53 +92,10 @@ def find_minimal_forbidden_minors(graphs, tw):
     for i, graph in enumerate(graphs):
         print("Processing graph", i+1, "out of", len(graphs))
 
-        if nx.is_connected(graph):
-            continue
+        n_graph = nx.Graph()
+        n_graph.add_edges_from(graph)
 
-        if treewidth_min_fill_in(graph)[0] > tw:
-            continue
-
-        is_forbidden_minor = True
-
-        for node in graph.nodes:
-            temp_graph = graph.copy()
-            temp_graph.remove_node(node)
-
-            if treewidth_min_fill_in(temp_graph)[0] < tw:
-                is_forbidden_minor = False
-                break
-
-        if not is_forbidden_minor:
-            continue
-
-        for edge in graph.edges:
-            temp_graph = graph.copy()
-            temp_graph.remove_edge(*edge)
-
-            if treewidth_min_fill_in(temp_graph)[0] < tw:
-                is_forbidden_minor = False
-                break
-
-        if not is_forbidden_minor:
-            continue
-
-        for edge in graph.edges:
-            temp_graph = graph.copy()
-            temp_graph = contracted_edge(temp_graph, edge)
-
-            if treewidth_min_fill_in(temp_graph)[0] < tw:
-                is_forbidden_minor = False
-                break
-
-        if not is_forbidden_minor:
-            continue
-
-        for forbidden_minor in forbidden_minors:
-            if nx.is_isomorphic(graph, forbidden_minor):
-                is_forbidden_minor = False
-                break
-
-        if is_forbidden_minor:
+        if is_mfm(n_graph, tw):
             forbidden_minors.append(graph)
 
     print("There were", len(forbidden_minors), "minimal forbidden minors found for treewidth", tw)
@@ -139,16 +103,39 @@ def find_minimal_forbidden_minors(graphs, tw):
     return forbidden_minors
 
 
-"""
-min_forbidden_minors = find_minimal_forbidden_minors(all_graphs, 3)
-print("Found", len(min_forbidden_minors), "minimal forbidden minors up to", nr_vertices, "vertices.")
+def is_mfm(graph, tw):
 
-for g in min_forbidden_minors:
-    pos = nx.spring_layout(g)
-    nx.draw(g, pos, with_labels=True)
-    plt.show()
-"""
+    if treewidth_min_fill_in(graph)[0] != tw:
+        return False
 
+    for node in graph.nodes:
+        temp_graph = graph.copy()
+        temp_graph.remove_node(node)
+        if treewidth_min_fill_in(temp_graph)[0] >= tw:
+            return False
+
+    for edge in graph.edges:
+        temp_graph = graph.copy()
+        temp_graph.remove_edge(*edge)
+        if treewidth_min_fill_in(temp_graph)[0] >= tw:
+            return False
+
+    for edge in graph.edges:
+        temp_graph = graph.copy()
+        temp_graph = contracted_edge(temp_graph, edge)
+        if treewidth_min_fill_in(temp_graph)[0] >= tw:
+            return False
+
+    return True
+
+
+# Script
+nr_vertices = 5
+threewidth = 3
+all_graphs = gen_connected_graphs_up_to(nr_vertices)
+min_forbidden_minors = find_minimal_forbidden_minors(all_graphs, threewidth)
+
+draw_graphs(min_forbidden_minors)
 
 """
 - Process to find mfm for threewidth 4 (tw4) -

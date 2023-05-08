@@ -3,11 +3,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-# Manual connected graph generation, based on sketch codes from @khakhalin
+"""
+Manual connected graph generation, based on sketch codes from @khakhalin
 
-# Generate the graph recursively, by including or skipping each edge (lexicographical order by construction)
-# Issue with this method is that this brute force approach takes exponential time,
-# which increases by 2 to the power of n-1 with each vertex increase
+Generate the graph recursively, by including or skipping each edge (lexicographical order by construction)
+Issue with this method is that this brute force approach takes exponential time,
+which increases by 2 to the power of n-1 with each vertex increase
+"""
+
+
 def make_graphs(n=2, i=None, j=None):
     graph = []
     if i is None:
@@ -94,12 +98,6 @@ def draw_graphs(graphs):
         nx.draw(n_graph, pos, with_labels=True)
         plt.show()
 
-
-# Testing the graph generation
-nr_vertices = 4
-gen_graphs = make_graphs(nr_vertices)
-gen_graphs = select(gen_graphs, nr_vertices)
-draw_graphs(gen_graphs)
 
 """
 # Random creation
