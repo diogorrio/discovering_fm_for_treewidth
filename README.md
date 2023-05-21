@@ -17,7 +17,7 @@ AND algorithmic skeleton of finding forbidden minors.\
 V6. Combinatorial enumeration approach implemented.\
 V7. Binomial graph random sampling approach implemented, given the lack of feasibility 
 of the brute-force graph generation process.\
-V8.
+V8. 
 
 ## LICENSE
 See [LICENSE](LICENSE).
