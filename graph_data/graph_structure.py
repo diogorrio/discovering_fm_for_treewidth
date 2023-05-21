@@ -1,7 +1,5 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-import numpy as np
-
 
 """
 Manual connected graph generation, based on sketch codes from @khakhalin
@@ -42,7 +40,7 @@ def all_perm(n, s=None):
         return all_perm(n, tuple(range(n)))
     if not s:
         return [[]]
-    return [[i]+p for i in s for p in all_perm(n, tuple([k for k in s if k != i]))]
+    return [[i] + p for i in s for p in all_perm(n, tuple([k for k in s if k != i]))]
 
 
 def is_connected(g):
@@ -86,7 +84,6 @@ def select(gs, target_nr_vertices):
 
 
 def draw_graphs(graphs):
-
     for graph in graphs:
         print(graph)
 
@@ -97,6 +94,40 @@ def draw_graphs(graphs):
         pos = nx.spring_layout(n_graph)
         nx.draw(n_graph, pos, with_labels=True)
         plt.show()
+
+
+# Converts graph sets (generated with the 'nauty' C package), under the .g6 format, into a Python array (not working)
+def convert_g6_to_array(file_name):
+    # 'read' mode, indicated by "r"
+    file_contents = open(file_name, "r")
+
+    lines = file_contents.readlines()
+
+    for line in lines:
+
+        n = ord(line.split()[0][0]) - 63
+        h = ''
+
+        l = n - 1
+        for i in range(1, l):
+            temp = bin(ord(line.split()[0][i]) - 63)[2:]
+            if len(temp) < 6:
+                for k in range(6 - len(temp)):
+                    h = h + '0'
+            h = h + temp
+
+        A = [[0] * n for j in range(n)]
+        k = 0
+        for i in range(1, n):
+            for j in range(0, i):
+                A[i][j] = int(h[k])
+                A[j][i] = A[i][j]
+                k = k + 1
+
+    return A
+
+
+# connected_10 = convert_g6_to_array("graphs/graph10c.g6")
 
 
 """
