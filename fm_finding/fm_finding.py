@@ -1,9 +1,11 @@
 import numpy as np
-import networkx as nx
 from itertools import combinations
 import matplotlib.pyplot as plt
+import getpass
 from networkx.algorithms.approximation import treewidth_min_fill_in
 from networkx.algorithms.minors import contracted_edge
+
+from graph_data.db_structure import *
 from graph_data.graph_structure import *
 
 """
@@ -50,11 +52,31 @@ class FMFinding:
 
     def __init__(self, fm_type):
         self.fm_type = fm_type
-        if self.fm_type == "f4":
+        # For F(n), the tw has to be n+1
+        if self.fm_type == "F(1)":
+            self.treewidth = 2
+            self.table_name = 'fm_in_f1'
+            self.min_nr_minors = 1
+            self.max_nr_minors = 1
+        elif self.fm_type == "F(2)":
+            self.treewidth = 3
+            self.table_name = 'fm_in_f2'
+            self.min_nr_minors = 1
+            self.max_nr_minors = 1
+        elif self.fm_type == "F(3)":
+            self.treewidth = 4
+            self.table_name = 'fm_in_f3'
+            self.min_nr_minors = 1
+            self.max_nr_minors = 4
+        elif self.fm_type == "F(4)":
+            self.treewidth = 5
+            self.table_name = 'fm_in_f4'
             self.min_nr_minors = 90
             self.max_nr_minors = 100
         # TODO: TBD: nr_minors in f5
-        elif self.fm_type == "f5":
+        elif self.fm_type == "F(5)":
+            self.treewidth = 6
+            self.table_name = 'fm_in_f5'
             self.min_nr_minors = 0
             self.max_nr_minors = 0
 
@@ -67,26 +89,50 @@ class FMFinding:
     def recursive_construction(self):
         return self
 
-    def combinatorial_enumeration(self):
-        return self
+    def combinatorial_enumeration(self, nr_v):
+        nr_vertices = nr_v
+        # For F(n), the tw has to be n+1
+        all_graphs = gen_connected_graphs_with(nr_vertices)
+        min_forbidden_minors = find_minimal_forbidden_minors(all_graphs, self.treewidth, self.table_name)
 
-    # See if an ML approach is worth it, since training would take time
+        draw_graphs(min_forbidden_minors)
+
+        print("Combinatorial enumeration process finished.")
+        print("This outputs", len(min_forbidden_minors),
+              "minimal forbidden minors, out of the established", self.max_nr_minors, "at most",
+              "for the set", self.fm_type)
+
+    def random_sampling(self, nr_v, edge_p):
+        edge_prob = edge_p
+        nr_vertices = nr_v
+
+        all_graphs = []
+        # all_graphs = random_sample()
+
+        graph = nx.erdos_renyi_graph(nr_vertices, edge_prob)
+
+        min_forbidden_minors = find_minimal_forbidden_minors(all_graphs, self.treewidth)
+
+        print("Random sampling process finished.")
+        print("This outputs", len(min_forbidden_minors),
+              "minimal forbidden minors, out of the established", self.max_nr_minors, "at most",
+              "for the set", self.fm_type)
 
 
 # For n=[0,+oo], n being the # of vertices:
 # 1, 1, 1, 2, 6, 21, 112, ... (see https://oeis.org/A001349/list)
-def gen_connected_graphs_up_to(max_nr_vertices):
+def gen_connected_graphs_with(max_nr_vertices):
 
     gen_graphs = make_graphs(max_nr_vertices)
     gen_graphs = select(gen_graphs, max_nr_vertices)
-    draw_graphs(gen_graphs)
+    #draw_graphs(gen_graphs)
 
-    print("Found", len(gen_graphs), "distinct connected graphs with", nr_vertices, "vertices.")
+    print("Found", len(gen_graphs), "distinct connected graphs with", max_nr_vertices, "vertices.")
 
     return gen_graphs
 
 
-def find_minimal_forbidden_minors(graphs, tw):
+def find_minimal_forbidden_minors(graphs, tw, tn):
     forbidden_minors = []
 
     for i, graph in enumerate(graphs):
@@ -97,6 +143,9 @@ def find_minimal_forbidden_minors(graphs, tw):
 
         if is_mfm(n_graph, tw):
             forbidden_minors.append(graph)
+            # Edges representation turned to string to be added to database
+            graph_as_str = "[" + ", ".join([str(edge) for edge in graph]) + "]"
+            insert_fm(graph_as_str, tn, 'forbidden_minors', 'localhost', 'root', password)
 
     print("There were", len(forbidden_minors), "minimal forbidden minors found for treewidth", tw)
 
@@ -129,17 +178,15 @@ def is_mfm(graph, tw):
     return True
 
 
-# Script
-nr_vertices = 6
-# For F(n), the tw has to be n+1
-threewidth = 4
-all_graphs = gen_connected_graphs_up_to(nr_vertices)
-min_forbidden_minors = find_minimal_forbidden_minors(all_graphs, threewidth)
+# def random_sample():
 
-draw_graphs(min_forbidden_minors)
+
+# Script
+password = getpass.getpass("Please insert the server password: ")
+
 
 """
-- Process to find mfm for threewidth 4 (tw4) -
+- Process to find mfm for treewidth 4 (tw4) -
 
 # TODO: Properly expand each point w/ relevant practical info
 
@@ -159,4 +206,3 @@ draw_graphs(min_forbidden_minors)
 
 # TODO: Check if this is feasible for tw5
 """
-
