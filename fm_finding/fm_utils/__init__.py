@@ -17,6 +17,7 @@ def main():
     # Testing, for F(1), F(2) or F(3)
     fm_f3 = FMFinding("F(3)")
     fm_f3.combinatorial_enumeration(5)
+    fm_f3.random_sampling(10, 0.7)
 
     # For F(4)
     fm_f4 = FMFinding("F(4)")

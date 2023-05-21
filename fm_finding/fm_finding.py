@@ -106,12 +106,10 @@ class FMFinding:
         edge_prob = edge_p
         nr_vertices = nr_v
 
-        all_graphs = []
-        # all_graphs = random_sample()
+        nr_gen_graphs = 150
+        all_graphs = rnd_graph_sample(nr_vertices, edge_prob, nr_gen_graphs)
 
-        graph = nx.erdos_renyi_graph(nr_vertices, edge_prob)
-
-        min_forbidden_minors = find_minimal_forbidden_minors(all_graphs, self.treewidth)
+        min_forbidden_minors = find_minimal_forbidden_minors(all_graphs, self.treewidth, self.table_name)
 
         print("Random sampling process finished.")
         print("This outputs", len(min_forbidden_minors),
@@ -178,7 +176,17 @@ def is_mfm(graph, tw):
     return True
 
 
-# def random_sample():
+def rnd_graph_sample(nr_v, edge_p, sample_size):
+
+    gen_graphs = []
+
+    count = 0
+    while count < sample_size:
+        graph = nx.erdos_renyi_graph(nr_v, edge_p)
+        gen_graphs.append(graph)
+        count += 1
+
+    return gen_graphs
 
 
 # Script
