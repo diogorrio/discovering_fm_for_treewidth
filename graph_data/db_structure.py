@@ -1,44 +1,23 @@
 import mysql.connector
-import numpy as np
 
 
 def create_db(db_name, host, user, password):
-
     db = mysql.connector.connect(
         host=host,
         user=user,
         password=password,
     )
-    # Cursor to execute SQL queries
     cursor = db.cursor()
 
-    # Create the db - IF it does NOT exist already
-    cursor.execute(f"CREATE DATABASE IF NOT EXISTS {db_name}")
+    stmt = "CREATE DATABASE IF NOT EXISTS {}".format(db_name)
+
+    cursor.execute(stmt)
 
     db.close()
-    print(f"Database '{db_name}' has been created.")
+    print("Database", db_name, "has been created.")
 
 
 def create_table(table_name, db_name, host, user, password):
-
-    db = mysql.connector.connect(
-        host=host,
-        user=user,
-        password=password,
-        database=db_name
-    )
-    cursor = db.cursor()
-
-    # Create the table - IF it does NOT exist already
-    cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name} (id INT AUTO_INCREMENT PRIMARY KEY, minor TEXT)")
-
-    db.commit()
-    db.close()
-
-    print(f"Table '{table_name}' has been created.")
-
-
-def insert_fm(minor, table_name, db_name, host, user, password):
     db = mysql.connector.connect(
         host=host,
         user=user,
@@ -47,10 +26,82 @@ def insert_fm(minor, table_name, db_name, host, user, password):
     )
     cursor = db.cursor()
 
-    # Adjacency matrix to string (db-compatible format)
-    cursor.execute(f"INSERT INTO {table_name} (minor) VALUES (%s)", (np.array2string(minor),))
+    stmt = (
+        "CREATE TABLE IF NOT EXISTS {} "
+        "(id INT AUTO_INCREMENT PRIMARY KEY, minors TEXT)"
+    ).format(table_name)
+
+    cursor.execute(stmt)
 
     db.commit()
     db.close()
 
-    print(f"Minor '{minor}' has been inserted into '{table_name}'.")
+    print("Table", table_name, "has been created.")
+
+
+def insert_fm(minor_to_add, table_name, db_name, host, user, password):
+    db = mysql.connector.connect(
+        host=host,
+        user=user,
+        password=password,
+        database=db_name,
+    )
+    cursor = db.cursor()
+
+    stmt = (
+        "INSERT INTO {} (minors)"
+        "VALUES (%s)"
+    ).format(table_name)
+    data = (minor_to_add,)
+
+    cursor.execute(stmt, data)
+
+    db.commit()
+    db.close()
+
+    print("Minor", minor_to_add, "has been inserted into", table_name, ".")
+
+
+def remove_fm(minor_to_remove, table_name, db_name, host, user, password):
+    db = mysql.connector.connect(
+        host=host,
+        user=user,
+        password=password,
+        database=db_name,
+    )
+    cursor = db.cursor()
+
+    stmt = (
+        "DELETE FROM {} WHERE minors = %s"
+    ).format(table_name)
+    data = (minor_to_remove,)
+
+    cursor.execute(stmt, data)
+
+    db.commit()
+    db.close()
+
+    print("Minor", minor_to_remove, "has been removed from", table_name, ".")
+
+
+def retrieve_entries(table_name, db_name, host, user, password):
+    db = mysql.connector.connect(
+        host=host,
+        user=user,
+        password=password,
+        database=db_name,
+    )
+    cursor = db.cursor()
+
+    stmt = "SELECT minors FROM {}".format(table_name)
+    print("Retrieving entries from table '{}' in database '{}'...".format(table_name, db_name))
+    cursor.execute(stmt)
+    rows = cursor.fetchall()
+
+    entries = [row[0] for row in rows]
+
+    db.close()
+
+    print("Entries retrieved successfully.")
+
+    return entries
