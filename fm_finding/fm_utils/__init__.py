@@ -17,10 +17,12 @@ def main():
     # Testing, for F(1), F(2) or F(3)
     fm_f3 = FMFinding("F(3)")
     fm_f3.combinatorial_enumeration(5)
-    fm_f3.random_sampling(10, 0.7)
+    # TODO: Test how long it takes to find the Wagner graph (8 vertices)
+    # TODO: Also note the running time to understand the most effective edge_prob for this problem
+    fm_f3.random_sampling(8, 0.7)
 
     # For F(4)
-    fm_f4 = FMFinding("F(4)")
+    # fm_f4 = FMFinding("F(4)")
     # For 8 (or more) vertices, it takes too long at the moment
     # fm_f4.combinatorial_enumeration(7)
     # fm_f4.random_sampling(10, 0.6)
