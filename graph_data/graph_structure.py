@@ -96,6 +96,16 @@ def draw_graphs(graphs):
         plt.show()
 
 
+def draw_graphs_rnd(graphs):
+    for graph in graphs:
+
+        print(list(graph.edges()))
+
+        pos = nx.spring_layout(graph)
+        nx.draw(graph, pos, with_labels=True)
+        plt.show()
+
+
 # Converts graph sets (generated with the 'nauty' C package), under the .g6 format, into a Python array (not working)
 def convert_g6_to_array(file_name):
     # 'read' mode, indicated by "r"

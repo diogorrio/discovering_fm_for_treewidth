@@ -1,3 +1,4 @@
+import networkx as nx
 import numpy as np
 from itertools import combinations
 import matplotlib.pyplot as plt
@@ -106,10 +107,24 @@ class FMFinding:
         edge_prob = edge_p
         nr_vertices = nr_v
 
-        nr_gen_graphs = 150
+        nr_gen_graphs = 100000
         all_graphs = rnd_graph_sample(nr_vertices, edge_prob, nr_gen_graphs)
 
-        min_forbidden_minors = find_minimal_forbidden_minors(all_graphs, self.treewidth, self.table_name)
+        # Make sure of connectivity (and thus, viability) of analyzing the sampled graphs
+        conn_graphs = []
+        for graph in all_graphs:
+            if nx.is_connected(graph):
+                conn_graphs.append(graph)
+
+        print(len(conn_graphs), "out of the initially sampled", len(all_graphs), "graphs are connected.")
+
+        min_forbidden_minors = find_minimal_forbidden_minors_rnd(conn_graphs, self.treewidth, self.table_name)
+
+        draw_graphs_rnd(min_forbidden_minors)
+
+        # TODO: Check isomorphism with any other generated graphs.
+        #  An option could be simply generating and adding them all and
+        #  only doing the isomorphism check on the entire db later - instead of at every addition of a mfm
 
         print("Random sampling process finished.")
         print("This outputs", len(min_forbidden_minors),
@@ -143,6 +158,24 @@ def find_minimal_forbidden_minors(graphs, tw, tn):
             forbidden_minors.append(graph)
             # Edges representation turned to string to be added to database
             graph_as_str = "[" + ", ".join([str(edge) for edge in graph]) + "]"
+            insert_fm(graph_as_str, tn, 'forbidden_minors', 'localhost', 'root', password)
+
+    print("There were", len(forbidden_minors), "minimal forbidden minors found for treewidth", tw)
+
+    return forbidden_minors
+
+
+def find_minimal_forbidden_minors_rnd(graphs, tw, tn):
+    forbidden_minors = []
+
+    for i, graph in enumerate(graphs):
+        print("Processing graph", i+1, "out of", len(graphs))
+
+        if is_mfm(graph, tw):
+            forbidden_minors.append(graph)
+            # Edges representation turned to string to be added to database
+            edge_list_graph = list(graph.edges())
+            graph_as_str = "[" + ", ".join([str(edge) for edge in edge_list_graph]) + "]"
             insert_fm(graph_as_str, tn, 'forbidden_minors', 'localhost', 'root', password)
 
     print("There were", len(forbidden_minors), "minimal forbidden minors found for treewidth", tw)
