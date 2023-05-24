@@ -122,7 +122,7 @@ class FMFinding:
 
         draw_graphs_rnd(min_forbidden_minors)
 
-        # TODO: Check isomorphism with any other generated graphs.
+        #  Isomorphism:
         #  An option could be simply generating and adding them all and
         #  only doing the isomorphism check on the entire db later - instead of at every addition of a mfm
 
@@ -149,16 +149,23 @@ def find_minimal_forbidden_minors(graphs, tw, tn):
     forbidden_minors = []
 
     for i, graph in enumerate(graphs):
-        print("Processing graph", i+1, "out of", len(graphs))
+        # print("Processing graph", i+1, "out of", len(graphs))
 
         n_graph = nx.Graph()
         n_graph.add_edges_from(graph)
 
         if is_mfm(n_graph, tw):
             forbidden_minors.append(graph)
-            # Edges representation turned to string to be added to database
-            graph_as_str = "[" + ", ".join([str(edge) for edge in graph]) + "]"
-            insert_fm(graph_as_str, tn, 'forbidden_minors', 'localhost', 'root', password)
+
+            if not is_isomorphic(n_graph, tn):
+                # Edges representation turned to string to be added to database
+                graph_as_str = "[" + ", ".join([str(edge) for edge in graph]) + "]"
+                insert_fm(graph_as_str, tn, 'forbidden_minors', 'localhost', 'root', password)
+            else:
+                edge_list_graph = list(n_graph.edges())
+                print("This found minimal forbidden minor was isomorphic to one already on the database:")
+                print(edge_list_graph)
+                print("Skipping...")
 
     print("There were", len(forbidden_minors), "minimal forbidden minors found for treewidth", tw)
 
@@ -169,14 +176,21 @@ def find_minimal_forbidden_minors_rnd(graphs, tw, tn):
     forbidden_minors = []
 
     for i, graph in enumerate(graphs):
-        print("Processing graph", i+1, "out of", len(graphs))
+        # print("Processing graph", i+1, "out of", len(graphs))
 
         if is_mfm(graph, tw):
             forbidden_minors.append(graph)
-            # Edges representation turned to string to be added to database
+
             edge_list_graph = list(graph.edges())
-            graph_as_str = "[" + ", ".join([str(edge) for edge in edge_list_graph]) + "]"
-            insert_fm(graph_as_str, tn, 'forbidden_minors', 'localhost', 'root', password)
+
+            if not is_isomorphic(graph, tn):
+                # Edges representation turned to string to be added to database
+                graph_as_str = "[" + ", ".join([str(edge) for edge in edge_list_graph]) + "]"
+                insert_fm(graph_as_str, tn, 'forbidden_minors', 'localhost', 'root', password)
+            else:
+                print("This found minimal forbidden minor was isomorphic to one already on the database:")
+                print(edge_list_graph)
+                print("Skipping...")
 
     print("There were", len(forbidden_minors), "minimal forbidden minors found for treewidth", tw)
 
@@ -185,6 +199,7 @@ def find_minimal_forbidden_minors_rnd(graphs, tw, tn):
 
 def is_mfm(graph, tw):
 
+    # TODO: Have an exact tw solver!
     if treewidth_min_fill_in(graph)[0] != tw:
         return False
 
@@ -220,6 +235,16 @@ def rnd_graph_sample(nr_v, edge_p, sample_size):
         count += 1
 
     return gen_graphs
+
+
+def is_isomorphic(graph_to_compare, tn):
+    # Check isomorphism with any other already previously generated graph
+    retrieved, n_retrieved = retrieve_entries(tn, 'forbidden_minors', 'localhost', 'root', password)
+    for r_graph in n_retrieved:
+        if nx.is_isomorphic(graph_to_compare, r_graph):
+            return True
+
+    return False
 
 
 # Script

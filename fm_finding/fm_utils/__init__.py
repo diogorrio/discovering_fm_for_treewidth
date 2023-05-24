@@ -1,5 +1,7 @@
+import networkx as nx
+
 from fm_finding.fm_finding import FMFinding, password
-from graph_data.db_structure import create_db, create_table
+from graph_data.db_structure import create_db, create_table, retrieve_entries
 
 
 def main():
@@ -16,7 +18,7 @@ def main():
     # Find forbidden minors through various techniques; create object and use different methods
     # Testing, for F(1), F(2) or F(3)
     fm_f3 = FMFinding("F(3)")
-    # fm_f3.combinatorial_enumeration(5)
+    fm_f3.combinatorial_enumeration(5)
     # TODO: Test how long it takes to find the Wagner graph (8 vertices)
     #  Also note the running time to understand the most effective nr_vertices / edge_prob combination for this problem
     fm_f3.random_sampling(8, 0.5)

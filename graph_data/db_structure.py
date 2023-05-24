@@ -1,4 +1,7 @@
+import ast
+
 import mysql.connector
+import networkx as nx
 
 
 def create_db(db_name, host, user, password):
@@ -59,7 +62,7 @@ def insert_fm(minor_to_add, table_name, db_name, host, user, password):
     db.commit()
     db.close()
 
-    print("Minor", minor_to_add, "has been inserted into", table_name, ".")
+    print("Minor", minor_to_add, "has been inserted into", table_name)
 
 
 def remove_fm(minor_to_remove, table_name, db_name, host, user, password):
@@ -99,9 +102,16 @@ def retrieve_entries(table_name, db_name, host, user, password):
     rows = cursor.fetchall()
 
     entries = [row[0] for row in rows]
+    n_entries = []
+
+    for i, entry in enumerate(entries):
+        entries[i] = ast.literal_eval(entry)
+        n_entry = nx.Graph()
+        n_entry.add_edges_from(entries[i])
+        n_entries.append(n_entry)
 
     db.close()
 
     print("Entries retrieved successfully.")
 
-    return entries
+    return entries, n_entries
