@@ -57,20 +57,21 @@ no = {'no', 'n', 'nah'}
 
 
 def wait_for_input():
+    password_wfi, start_db_wfi = None, None
     sys.stdout.write("Do you want to start up the database? (Type 'yes' or 'no')")
 
     y_n = input().lower()
     if y_n in yes:
         start_db_wfi = True
         password_wfi = getpass.getpass("Please insert the server password: ")
+        return password_wfi, start_db_wfi
     elif y_n in no:
         start_db_wfi = False
         password_wfi = ""
         print("Database not initiated.")
+        return password_wfi, start_db_wfi
     else:
         wait_for_input()
-
-    return password_wfi, start_db_wfi
 
 
 password, start_db = wait_for_input()
@@ -111,7 +112,6 @@ class FMFinding:
     # All these methods might justify their own class, if I decide to have different ones to compare
 
     def tree_decompose(self):
-        print("Format working as", self.min_nr_minors)
         return self
 
     def recursive_construction(self):

@@ -16,7 +16,7 @@ def main():
 
     # TESTING SECTION: Do comment out residuals if there are any to be found here
     graph = nx.erdos_renyi_graph(10, 0.5)
-    print("The result of qbb for", graph, "is", quick_bb(graph))
+    print("The result of qbb for", graph, "is", max(1, max(len(u) - 1 for u in quick_bb(graph))))
     print("The result of nx's tw min fill for", graph, "is", treewidth_min_fill_in(graph)[0])
 
     # Find forbidden minors through various techniques; create object and use different methods
