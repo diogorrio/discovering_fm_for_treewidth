@@ -1,3 +1,5 @@
+import sys
+
 import networkx as nx
 import numpy as np
 from itertools import combinations
@@ -6,6 +8,7 @@ import getpass
 from networkx.algorithms.approximation import treewidth_min_fill_in
 from networkx.algorithms.minors import contracted_edge
 
+from fm_finding.tw_quickbb import quick_bb
 from graph_data.db_structure import *
 from graph_data.graph_structure import *
 
@@ -47,6 +50,30 @@ Some random, possibly useful theory notes:
     (8. Do all the vertices have to have the same degree as all the others?)
     (9. ...)
 """
+
+# Setup script
+yes = {'yes', 'y', 'yeah', ''}
+no = {'no', 'n', 'nah'}
+
+
+def wait_for_input():
+    sys.stdout.write("Do you want to start up the database? (Type 'yes' or 'no')")
+
+    y_n = input().lower()
+    if y_n in yes:
+        start_db_wfi = True
+        password_wfi = getpass.getpass("Please insert the server password: ")
+    elif y_n in no:
+        start_db_wfi = False
+        password_wfi = ""
+        print("Database not initiated.")
+    else:
+        wait_for_input()
+
+    return password_wfi, start_db_wfi
+
+
+password, start_db = wait_for_input()
 
 
 class FMFinding:
@@ -135,10 +162,9 @@ class FMFinding:
 # For n=[0,+oo], n being the # of vertices:
 # 1, 1, 1, 2, 6, 21, 112, ... (see https://oeis.org/A001349/list)
 def gen_connected_graphs_with(max_nr_vertices):
-
     gen_graphs = make_graphs(max_nr_vertices)
     gen_graphs = select(gen_graphs, max_nr_vertices)
-    #draw_graphs(gen_graphs)
+    # draw_graphs(gen_graphs)
 
     print("Found", len(gen_graphs), "distinct connected graphs with", max_nr_vertices, "vertices.")
 
@@ -198,10 +224,11 @@ def find_minimal_forbidden_minors_rnd(graphs, tw, tn):
 
 
 def is_mfm(graph, tw):
-
     # TODO: Have an exact tw solver!
     if treewidth_min_fill_in(graph)[0] != tw:
         return False
+    # if quick_bb(graph) != tw:
+    #    return False
 
     for node in graph.nodes:
         temp_graph = graph.copy()
@@ -225,7 +252,6 @@ def is_mfm(graph, tw):
 
 
 def rnd_graph_sample(nr_v, edge_p, sample_size):
-
     gen_graphs = []
 
     count = 0
@@ -245,10 +271,6 @@ def is_isomorphic(graph_to_compare, tn):
             return True
 
     return False
-
-
-# Script
-password = getpass.getpass("Please insert the server password: ")
 
 
 """
