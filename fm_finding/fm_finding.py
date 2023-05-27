@@ -52,12 +52,10 @@ Some random, possibly useful theory notes:
 """
 
 # Setup script
-yes = {'yes', 'y', 'yeah', ''}
-no = {'no', 'n', 'nah'}
-
-
 def wait_for_input():
-    password_wfi, start_db_wfi = None, None
+    yes = {'yes', 'y', 'yeah', ''}
+    no = {'no', 'n', 'nah'}
+
     sys.stdout.write("Do you want to start up the database? (Type 'yes' or 'no')")
 
     y_n = input().lower()
@@ -71,7 +69,8 @@ def wait_for_input():
         print("Database not initiated.")
         return password_wfi, start_db_wfi
     else:
-        wait_for_input()
+        print("Input was not valid. Rerun the program.")
+        sys.exit(0)
 
 
 password, start_db = wait_for_input()
