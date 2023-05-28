@@ -158,6 +158,32 @@ class FMFinding:
               "minimal forbidden minors, out of the established", self.max_nr_minors, "at most",
               "for the set", self.fm_type)
 
+    def find_best_ratio(self, nr_v, nr_gen):
+        nr_gen_graphs = nr_gen
+        ratios = []
+        edge_probs = []
+
+        for edge_p in np.arange(0, 1, 0.025):
+            gen_graphs = rnd_graph_sample(nr_v, edge_p, nr_gen_graphs)
+
+            conn_graphs = []
+            for graph in gen_graphs:
+                if nx.is_connected(graph):
+                    conn_graphs.append(graph)
+
+            print(len(conn_graphs), "out of the initially sampled", len(gen_graphs), "graphs are connected.")
+
+            if len(conn_graphs) != 0:
+                crt_ratio = ratio_tw_per_gen(conn_graphs, nr_v, edge_p, self.treewidth)
+                ratios.append(crt_ratio)
+                edge_probs.append(edge_p)
+
+        best_ratio = np.max(ratios)
+        best_ratio_i = np.argmax(ratios)
+        best_edge_p = edge_probs[best_ratio_i]
+        print("The edge probability that gives the best ratio for treewidth", self.treewidth,
+              "and for", nr_v, "vertices is", best_edge_p*100, "%. The ratio is", best_ratio, "%.")
+
 
 # For n=[0,+oo], n being the # of vertices:
 # 1, 1, 1, 2, 6, 21, 112, ... (see https://oeis.org/A001349/list)
@@ -268,6 +294,21 @@ def is_isomorphic(graph_to_compare, tn):
             return True
 
     return False
+
+
+# For experimenting - trying to determine the combination that has the highest correct tw per # of generations
+def ratio_tw_per_gen(graphs, nr_v, edge_p, tw):
+    correct_tw_right_away = 0
+    for graph in graphs:
+        if (max(1, max(len(u) - 1 for u in quick_bb(graph)))) == tw:
+            correct_tw_right_away += 1
+
+    ratio = round((correct_tw_right_away / len(graphs)) * 100, 2)
+
+    print("The ratio of the desired treewidth", tw, "for the combination of", nr_v,
+          "vertices and an edge probability of", edge_p, "is", ratio)
+
+    return ratio
 
 
 """

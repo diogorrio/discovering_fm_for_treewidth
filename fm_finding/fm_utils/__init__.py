@@ -16,13 +16,13 @@ def main():
 
     # Find forbidden minors through various techniques; create object and use different methods
     # Testing, for F(1), F(2) or F(3)
-    fm_f3 = FMFinding("F(3)")
-    combined_approach(fm_f3, 10)
-    # TODO: Test how long it takes to find the Wagner graph (8 vertices)
-    #  Also note the running time to understand the most effective nr_vertices / edge_prob combination for this problem
+    # fm_f3 = FMFinding("F(3)")
+    # combined_approach(fm_f3, 10)
+    # fm_f3.random_sampling(8, 0.625)
 
     # For F(4)
-    # fm_f4 = FMFinding("F(4)")
+    fm_f4 = FMFinding("F(4)")
+    fm_f4.find_best_ratio(8, 10000)
     # For 8 (or more) vertices, it takes too long at the moment
     # fm_f4.combinatorial_enumeration(7)
     # fm_f4.random_sampling(10, 0.6)
