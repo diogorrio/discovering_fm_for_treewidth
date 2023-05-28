@@ -125,7 +125,7 @@ def eliminate_node(graph, v):
 
 
 def delete_node(graph, v):
-    for u in graph[v]:
+    for u in list(graph[v]):
         graph[u].remove(v)
     del graph[v]
 

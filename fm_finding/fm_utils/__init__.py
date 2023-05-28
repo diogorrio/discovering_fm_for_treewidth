@@ -14,18 +14,12 @@ def main():
 
     # TODO: Load graph data (if using generated graphs from 'nauty', specifically geng)
 
-    # TESTING SECTION: Do comment out residuals if there are any to be found here
-    graph = nx.erdos_renyi_graph(10, 0.5)
-    print("The result of qbb for", graph, "is", max(1, max(len(u) - 1 for u in quick_bb(graph))))
-    print("The result of nx's tw min fill for", graph, "is", treewidth_min_fill_in(graph)[0])
-
     # Find forbidden minors through various techniques; create object and use different methods
     # Testing, for F(1), F(2) or F(3)
     fm_f3 = FMFinding("F(3)")
-    # fm_f3.combinatorial_enumeration(5)
+    combined_approach(fm_f3, 10)
     # TODO: Test how long it takes to find the Wagner graph (8 vertices)
     #  Also note the running time to understand the most effective nr_vertices / edge_prob combination for this problem
-    # fm_f3.random_sampling(8, 0.5)
 
     # For F(4)
     # fm_f4 = FMFinding("F(4)")
@@ -47,6 +41,20 @@ def load_database():
     create_table('fm_in_f3', 'forbidden_minors', 'localhost', 'root', password)
     create_table('fm_in_f4', 'forbidden_minors', 'localhost', 'root', password)
     create_table('fm_in_f5', 'forbidden_minors', 'localhost', 'root', password)
+
+
+def combined_approach(fm_fn, max_nr_vertices):
+    """
+    Combines both the designed approaches (combinatorial enum. and random sampling),
+    separated by the number of vertices where it becomes more efficient to change approach
+    :param fm_fn: The set of the forbidden minors we want to fill it with
+    :param max_nr_vertices: Up until how many vertices do you want the graph search space to go?
+    """
+    break_point = 7
+    for i in range(2, break_point+1):
+        fm_fn.combinatorial_enumeration(i)
+    for i in range(break_point+1, max_nr_vertices+1):
+        fm_fn.random_sampling(i, 0.5)
 
 
 main()

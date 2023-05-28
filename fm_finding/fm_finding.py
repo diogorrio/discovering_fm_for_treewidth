@@ -51,6 +51,7 @@ Some random, possibly useful theory notes:
     (9. ...)
 """
 
+
 # Setup script
 def wait_for_input():
     yes = {'yes', 'y', 'yeah', ''}
@@ -124,7 +125,7 @@ class FMFinding:
 
         draw_graphs(min_forbidden_minors)
 
-        print("Combinatorial enumeration process finished.")
+        print("Combinatorial enumeration process finished for", nr_v, "vertices")
         print("This outputs", len(min_forbidden_minors),
               "minimal forbidden minors, out of the established", self.max_nr_minors, "at most",
               "for the set", self.fm_type)
@@ -152,7 +153,7 @@ class FMFinding:
         #  An option could be simply generating and adding them all and
         #  only doing the isomorphism check on the entire db later - instead of at every addition of a mfm
 
-        print("Random sampling process finished.")
+        print("Random sampling process finished for", nr_v, "vertices.")
         print("This outputs", len(min_forbidden_minors),
               "minimal forbidden minors, out of the established", self.max_nr_minors, "at most",
               "for the set", self.fm_type)
@@ -192,7 +193,7 @@ def find_minimal_forbidden_minors(graphs, tw, tn):
                 print(edge_list_graph)
                 print("Skipping...")
 
-    print("There were", len(forbidden_minors), "minimal forbidden minors found for treewidth", tw)
+    print("> There were", len(forbidden_minors), "minimal forbidden minors found for treewidth", tw)
 
     return forbidden_minors
 
@@ -217,34 +218,31 @@ def find_minimal_forbidden_minors_rnd(graphs, tw, tn):
                 print(edge_list_graph)
                 print("Skipping...")
 
-    print("There were", len(forbidden_minors), "minimal forbidden minors found for treewidth", tw)
+    print("> There were", len(forbidden_minors), "minimal forbidden minors found for treewidth", tw)
 
     return forbidden_minors
 
 
 def is_mfm(graph, tw):
-    # TODO: Have an exact tw solver!
-    if treewidth_min_fill_in(graph)[0] != tw:
+    if max(1, max(len(u) - 1 for u in quick_bb(graph))) != tw:
         return False
-    # if quick_bb(graph) != tw:
-    #    return False
 
     for node in graph.nodes:
         temp_graph = graph.copy()
         temp_graph.remove_node(node)
-        if treewidth_min_fill_in(temp_graph)[0] >= tw:
+        if max(1, max(len(u) - 1 for u in quick_bb(temp_graph))) >= tw:
             return False
 
     for edge in graph.edges:
         temp_graph = graph.copy()
         temp_graph.remove_edge(*edge)
-        if treewidth_min_fill_in(temp_graph)[0] >= tw:
+        if max(1, max(len(u) - 1 for u in quick_bb(temp_graph))) >= tw:
             return False
 
     for edge in graph.edges:
         temp_graph = graph.copy()
         temp_graph = contracted_edge(temp_graph, edge)
-        if treewidth_min_fill_in(temp_graph)[0] >= tw:
+        if max(1, max(len(u) - 1 for u in quick_bb(temp_graph))) >= tw:
             return False
 
     return True
