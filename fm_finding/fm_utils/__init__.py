@@ -22,7 +22,7 @@ def main():
 
     # For F(4)
     fm_f4 = FMFinding("F(4)")
-    fm_f4.find_best_ratio(8, 10000)
+    fm_f4.find_best_ratio(8, 10000, 0, 1, 0.025)
     # For 8 (or more) vertices, it takes too long at the moment
     # fm_f4.combinatorial_enumeration(7)
     # fm_f4.random_sampling(10, 0.6)

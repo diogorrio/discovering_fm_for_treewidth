@@ -158,12 +158,12 @@ class FMFinding:
               "minimal forbidden minors, out of the established", self.max_nr_minors, "at most",
               "for the set", self.fm_type)
 
-    def find_best_ratio(self, nr_v, nr_gen):
+    def find_best_ratio(self, nr_v, nr_gen, l_bound, u_bound, step_size):
         nr_gen_graphs = nr_gen
         ratios = []
         edge_probs = []
 
-        for edge_p in np.arange(0, 1, 0.025):
+        for edge_p in np.arange(l_bound, u_bound, step_size):
             gen_graphs = rnd_graph_sample(nr_v, edge_p, nr_gen_graphs)
 
             conn_graphs = []
