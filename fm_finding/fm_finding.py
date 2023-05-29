@@ -130,11 +130,11 @@ class FMFinding:
               "minimal forbidden minors, out of the established", self.max_nr_minors, "at most",
               "for the set", self.fm_type)
 
-    def random_sampling(self, nr_v, edge_p):
+    def random_sampling(self, nr_v, edge_p, nr_gen):
         edge_prob = edge_p
         nr_vertices = nr_v
+        nr_gen_graphs = nr_gen
 
-        nr_gen_graphs = 100000
         all_graphs = rnd_graph_sample(nr_vertices, edge_prob, nr_gen_graphs)
 
         # Make sure of connectivity (and thus, viability) of analyzing the sampled graphs
@@ -182,7 +182,7 @@ class FMFinding:
         best_ratio_i = np.argmax(ratios)
         best_edge_p = edge_probs[best_ratio_i]
         print("The edge probability that gives the best ratio for treewidth", self.treewidth,
-              "and for", nr_v, "vertices is", best_edge_p*100, "%. The ratio is", best_ratio, "%.")
+              "and for", nr_v, "vertices is", best_edge_p * 100, "%. The ratio is", best_ratio, "%.")
 
 
 # For n=[0,+oo], n being the # of vertices:

@@ -137,9 +137,6 @@ def convert_g6_to_array(file_name):
     return A
 
 
-# connected_10 = convert_g6_to_array("graphs/graph10c.g6")
-
-
 """
 # Random creation
 G = nx.erdos_renyi_graph(20, 0.4)

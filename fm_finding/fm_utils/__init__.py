@@ -16,16 +16,16 @@ def main():
 
     # Find forbidden minors through various techniques; create object and use different methods
     # Testing, for F(1), F(2) or F(3)
-    # fm_f3 = FMFinding("F(3)")
+    fm_f3 = FMFinding("F(3)")
     # combined_approach(fm_f3, 10)
-    # fm_f3.random_sampling(8, 0.625)
+    # fm_f3.random_sampling(10, 0.45, 10000)
+    # fm_f3.find_best_ratio(10, 10000, 0, 1, 0.025)
 
     # For F(4)
     fm_f4 = FMFinding("F(4)")
-    fm_f4.find_best_ratio(8, 10000, 0, 1, 0.025)
-    # For 8 (or more) vertices, it takes too long at the moment
+    # fm_f4.find_best_ratio(8, 10000, 0, 1, 0.025)
     # fm_f4.combinatorial_enumeration(7)
-    # fm_f4.random_sampling(10, 0.6)
+    fm_f4.random_sampling(9, 0.675, 1000000)
 
     # For F(5)
     # fm_f5 = FMFinding("F(5)")
