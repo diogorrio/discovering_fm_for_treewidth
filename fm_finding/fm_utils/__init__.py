@@ -4,6 +4,7 @@ from networkx.algorithms.approximation import treewidth_min_fill_in
 from fm_finding.fm_finding import FMFinding, password, start_db
 from fm_finding.tw_quickbb import quick_bb
 from graph_data.db_structure import create_db, create_table, retrieve_entries
+from testing.experiments import cge_testing
 
 
 def main():
@@ -25,13 +26,14 @@ def main():
     fm_f4 = FMFinding("F(4)")
     # fm_f4.find_best_ratio(8, 10000, 0, 1, 0.025)
     # fm_f4.combinatorial_enumeration(7)
-    fm_f4.random_sampling(9, 0.675, 1000000)
+    # fm_f4.random_sampling(11, 0.5, 2000000)
 
     # For F(5)
     # fm_f5 = FMFinding("F(5)")
     # fm_f5.tree_decompose()
 
-    # TODO: Check for exhaustiveness
+    # Testing
+    cge_testing(fm_f3)
 
 
 def load_database():

@@ -209,15 +209,16 @@ def find_minimal_forbidden_minors(graphs, tw, tn):
         if is_mfm(n_graph, tw):
             forbidden_minors.append(graph)
 
-            if not is_isomorphic(n_graph, tn):
-                # Edges representation turned to string to be added to database
-                graph_as_str = "[" + ", ".join([str(edge) for edge in graph]) + "]"
-                insert_fm(graph_as_str, tn, 'forbidden_minors', 'localhost', 'root', password)
-            else:
-                edge_list_graph = list(n_graph.edges())
-                print("This found minimal forbidden minor was isomorphic to one already on the database:")
-                print(edge_list_graph)
-                print("Skipping...")
+            if start_db:
+                if not is_isomorphic(n_graph, tn):
+                    # Edges representation turned to string to be added to database
+                    graph_as_str = "[" + ", ".join([str(edge) for edge in graph]) + "]"
+                    insert_fm(graph_as_str, tn, 'forbidden_minors', 'localhost', 'root', password)
+                else:
+                    edge_list_graph = list(n_graph.edges())
+                    print("This found minimal forbidden minor was isomorphic to one already on the database:")
+                    print(edge_list_graph)
+                    print("Skipping...")
 
     print("> There were", len(forbidden_minors), "minimal forbidden minors found for treewidth", tw)
 
@@ -235,14 +236,15 @@ def find_minimal_forbidden_minors_rnd(graphs, tw, tn):
 
             edge_list_graph = list(graph.edges())
 
-            if not is_isomorphic(graph, tn):
-                # Edges representation turned to string to be added to database
-                graph_as_str = "[" + ", ".join([str(edge) for edge in edge_list_graph]) + "]"
-                insert_fm(graph_as_str, tn, 'forbidden_minors', 'localhost', 'root', password)
-            else:
-                print("This found minimal forbidden minor was isomorphic to one already on the database:")
-                print(edge_list_graph)
-                print("Skipping...")
+            if start_db:
+                if not is_isomorphic(graph, tn):
+                    # Edges representation turned to string to be added to database
+                    graph_as_str = "[" + ", ".join([str(edge) for edge in edge_list_graph]) + "]"
+                    insert_fm(graph_as_str, tn, 'forbidden_minors', 'localhost', 'root', password)
+                else:
+                    print("This found minimal forbidden minor was isomorphic to one already on the database:")
+                    print(edge_list_graph)
+                    print("Skipping...")
 
     print("> There were", len(forbidden_minors), "minimal forbidden minors found for treewidth", tw)
 
@@ -310,25 +312,3 @@ def ratio_tw_per_gen(graphs, nr_v, edge_p, tw):
 
     return ratio
 
-
-"""
-- Process to find mfm for treewidth 4 (tw4) -
-
-# TODO: Properly expand each point w/ relevant practical info
-
-    1. Preprocess the tw4 condition, i.e. ID forbidden subgraphs + any properties that are non-existent for tw4
-    2. Generate candidate graphs up to a certain number of vertices
-    3. Prune to eliminate graphs that are not eligible for tw4 (based on degree constraints, symmetry, ...) - reducing
-        the search space - making the algorithm + efficient
-    4. Minor check the remaining candidate graphs for tw4, i.e. if a graph can be contracted to tw4 while preserving
-        connectivity and vertex order (* graph minor *)
-    5. ID the mfms among the remaining graphs that fail the tw4 condition - they are the smallest graphs that are NOT
-        contractible to tw4 (* min forbidden minors *)
-    6. Store in SQL DB
-    7. Iterate this whole process by increasing the nr of max vertices during the generation (or + pruning to narrow
-        search space, if still too large)
-    8. Analyze the mfms, study properties and evaluate impact on tw4 computations - this may be helpful to understanding
-        the constraints and structure of tw4 graphs
-
-# TODO: Check if this is feasible for tw5
-"""

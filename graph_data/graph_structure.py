@@ -135,22 +135,3 @@ def convert_g6_to_array(file_name):
                 k = k + 1
 
     return A
-
-
-"""
-# Random creation
-G = nx.erdos_renyi_graph(20, 0.4)
-
-# Define the forbidden minor K3
-H = nx.complete_graph(3)
-
-# Check if the graph contains the forbidden minor
-if nx.subgraph(G, list(H.nodes())).number_of_edges() == H.number_of_edges():
-    print("Found a forbidden minor!")
-
-    # Adjacency matrix (or whatever format I end up using) to a string format
-    a_m = np.array([[0, 0, 1], [1, 1, 0], [1, 0, 0]])
-    insert_fm(a_m, 'fm_in_f4', 'forbidden_minors', 'local_host', 'admin', 'admin')
-else:
-    print("No forbidden minor found.")
-"""
