@@ -4,7 +4,7 @@ from networkx.algorithms.approximation import treewidth_min_fill_in
 from fm_finding.fm_finding import FMFinding, password, start_db
 from fm_finding.tw_quickbb import quick_bb
 from graph_data.db_structure import create_db, create_table, retrieve_entries
-from testing.experiments import cge_testing
+from testing.experiments import cge_testing, erdos_testing, highest_tw_ratio
 
 
 def main():
@@ -33,7 +33,10 @@ def main():
     # fm_f5.tree_decompose()
 
     # Testing
-    cge_testing(fm_f3)
+    # cge_testing(fm_f3)
+    # erdos_testing(fm_f3)
+    # highest_tw_ratio()
+
 
 
 def load_database():
@@ -53,9 +56,9 @@ def combined_approach(fm_fn, max_nr_vertices):
     :param max_nr_vertices: Up until how many vertices do you want the graph search space to go?
     """
     break_point = 7
-    for i in range(2, break_point+1):
+    for i in range(2, break_point + 1):
         fm_fn.combinatorial_enumeration(i)
-    for i in range(break_point+1, max_nr_vertices+1):
+    for i in range(break_point + 1, max_nr_vertices + 1):
         fm_fn.random_sampling(i, 0.5)
 
 
