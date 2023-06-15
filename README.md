@@ -18,7 +18,8 @@ V6. Combinatorial enumeration approach implemented.\
 V7. Binomial graph random sampling approach implemented, given the lack of feasibility 
 of the brute-force graph generation process.\
 V8. Combined approach (combinatorial enumeration up to 7 vertices AND random sampling thereon) implemented.\
-V9.
+V9. Integrated exact treewidth solver and isomorphism checker.\
+V10. Experiment design.
 
 ## LICENSE
 See [LICENSE](LICENSE).
