@@ -1,8 +1,10 @@
 import time
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from scipy.stats import linregress
+
+from fm_finding.fm_finding import password
+from graph_data.db_structure import retrieve_entries
+from graph_data.graph_structure import draw_graphs_rnd
 
 
 def measure_execution_time(fm_k, nr_vertices, approach, nr_gen):
@@ -101,3 +103,10 @@ def highest_tw_ratio():
     plt.title('Parameter Combination resulting in the Highest Treewidth Ratio (3)')
     plt.legend()
     plt.show()
+
+
+def draw_mfm(table_name):
+    retrieved, n_retrieved = retrieve_entries(table_name, 'forbidden_minors', 'localhost', 'root', password)
+    draw_graphs_rnd(n_retrieved)
+
+    print(len(n_retrieved), "minimal forbidden minors from the", table_name, "table were retrieved.")

@@ -4,7 +4,7 @@ from networkx.algorithms.approximation import treewidth_min_fill_in
 from fm_finding.fm_finding import FMFinding, password, start_db
 from fm_finding.tw_quickbb import quick_bb
 from graph_data.db_structure import create_db, create_table, retrieve_entries
-from testing.experiments import cge_testing, erdos_testing, highest_tw_ratio
+from testing.experiments import *
 
 
 def main():
@@ -36,7 +36,7 @@ def main():
     # cge_testing(fm_f3)
     # erdos_testing(fm_f3)
     # highest_tw_ratio()
-
+    draw_mfm("fm_in_f4")
 
 
 def load_database():
