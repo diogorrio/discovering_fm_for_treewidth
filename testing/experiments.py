@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 from fm_finding.fm_finding import password
 from graph_data.db_structure import retrieve_entries
-from graph_data.graph_structure import draw_graphs_rnd
+from graph_data.graph_structure import *
 
 
 def measure_execution_time(fm_k, nr_vertices, approach, nr_gen):

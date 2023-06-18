@@ -2,7 +2,6 @@ import networkx as nx
 from networkx.algorithms.approximation import treewidth_min_fill_in
 
 from fm_finding.fm_finding import FMFinding, password, start_db
-from fm_finding.tw_quickbb import quick_bb
 from graph_data.db_structure import create_db, create_table, retrieve_entries
 from testing.experiments import *
 
@@ -29,14 +28,14 @@ def main():
     # fm_f4.random_sampling(11, 0.5, 2000000)
 
     # For F(5)
-    # fm_f5 = FMFinding("F(5)")
+    fm_f5 = FMFinding("F(5)")
     # fm_f5.tree_decompose()
 
     # Testing
     # cge_testing(fm_f3)
     # erdos_testing(fm_f3)
     # highest_tw_ratio()
-    draw_mfm("fm_in_f4")
+    draw_mfm("fm_in_f3")
 
 
 def load_database():

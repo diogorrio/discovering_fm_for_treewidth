@@ -1,5 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+from pyvis.network import Network
 
 """
 Manual connected graph generation, based on sketch codes from @khakhalin
@@ -91,8 +92,10 @@ def draw_graphs(graphs):
         n_graph = nx.Graph()
         n_graph.add_edges_from(graph)
 
-        pos = nx.spring_layout(n_graph)
-        nx.draw(n_graph, pos, with_labels=True)
+        # pos = nx.circular_layout(n_graph)
+        # pos = nx.spring_layout(n_graph)
+        pos = nx.kamada_kawai_layout(n_graph)
+        nx.draw(n_graph, pos)
         plt.show()
 
 
@@ -101,8 +104,10 @@ def draw_graphs_rnd(graphs):
 
         print(list(graph.edges()))
 
-        pos = nx.spring_layout(graph)
-        nx.draw(graph, pos, with_labels=True)
+        # pos = nx.circular_layout(graph)
+        # pos = nx.spring_layout(graph)
+        pos = nx.kamada_kawai_layout(graph)
+        nx.draw(graph, pos)
         plt.show()
 
 
