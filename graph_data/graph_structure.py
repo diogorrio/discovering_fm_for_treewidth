@@ -105,8 +105,8 @@ def draw_graphs_rnd(graphs):
         print(list(graph.edges()))
 
         # pos = nx.circular_layout(graph)
-        # pos = nx.spring_layout(graph)
-        pos = nx.kamada_kawai_layout(graph)
+        pos = nx.spring_layout(graph)
+        # pos = nx.kamada_kawai_layout(graph)
         nx.draw(graph, pos)
         plt.show()
 
