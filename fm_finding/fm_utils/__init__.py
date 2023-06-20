@@ -23,19 +23,21 @@ def main():
 
     # For F(4)
     fm_f4 = FMFinding("F(4)")
-    # fm_f4.find_best_ratio(8, 10000, 0, 1, 0.025)
     # fm_f4.combinatorial_enumeration(7)
+    # fm_f4.find_best_ratio(8, 10000, 0, 1, 0.025)
     # fm_f4.random_sampling(11, 0.5, 2000000)
 
     # For F(5)
     fm_f5 = FMFinding("F(5)")
-    # fm_f5.tree_decompose()
+    # fm_f5.combinatorial_enumeration(7)
+    # TODO: fm_f5.find_best_ratio(10, 10000, 0, 1, 0.025)
+    # fm_f5.random_sampling(8, 0.925, 2000000)
 
     # Testing
     # cge_testing(fm_f3)
     # erdos_testing(fm_f3)
     # highest_tw_ratio()
-    draw_mfm("fm_in_f3")
+    draw_mfm("fm_in_f5")
 
 
 def load_database():
