@@ -1,5 +1,6 @@
 import time
 import numpy as np
+import seaborn as sns
 import matplotlib.pyplot as plt
 
 from fm_finding.fm_finding import password
@@ -110,3 +111,38 @@ def draw_mfm(table_name):
     draw_graphs_rnd(n_retrieved)
 
     print(len(n_retrieved), "minimal forbidden minors from the", table_name, "table were retrieved.")
+
+
+def avg_runs_until_minor():
+    x = [8, 9, 10, 11]
+    probs = [16130, 211000, 3320000, 7780000]
+
+    plt.figure()
+    ax = sns.heatmap(np.array([probs]), cmap='YlGnBu', annot=True, cbar=True)
+    plt.xlabel('Number of Vertices')
+    plt.ylabel('A minor is found every N runs (for x vertices)')
+    plt.title('Average Number of Runs until an MFM is Found')
+
+    ax.set_xticklabels(x)
+
+    plt.show()
+
+
+def conn_check_pruning():
+    x = [8, 9, 10, 11, 12]
+    connected = [999900, 998937, 995427, 989404, 972797]
+    total = 1000000
+    pruning_achieved = [(total - c / total) * 100 for c in connected]
+
+    plt.figure()
+    plt.bar(x, pruning_achieved)
+    plt.xlabel('Number of Vertices')
+    plt.ylabel('Reduction/Pruning Achieved (%)')
+    plt.title('Search Space Reduction when Performing \n Pre-Analysis Connectivity Checking',
+              y=1.05)
+
+    plt.ylim(min(pruning_achieved), max(pruning_achieved)+0.05)
+
+    plt.tight_layout()
+    plt.show()
+

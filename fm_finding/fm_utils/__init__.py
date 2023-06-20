@@ -25,7 +25,7 @@ def main():
     fm_f4 = FMFinding("F(4)")
     # fm_f4.combinatorial_enumeration(7)
     # fm_f4.find_best_ratio(8, 10000, 0, 1, 0.025)
-    # fm_f4.random_sampling(11, 0.5, 2000000)
+    # fm_f4.random_sampling(12, 0.425, 1000000)
 
     # For F(5)
     fm_f5 = FMFinding("F(5)")
@@ -37,7 +37,9 @@ def main():
     # cge_testing(fm_f3)
     # erdos_testing(fm_f3)
     # highest_tw_ratio()
-    draw_mfm("fm_in_f5")
+    # draw_mfm("fm_in_f4")
+    # avg_runs_until_minor()
+    # conn_check_pruning()
 
 
 def load_database():
