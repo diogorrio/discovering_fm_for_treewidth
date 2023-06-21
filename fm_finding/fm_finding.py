@@ -229,7 +229,7 @@ def find_minimal_forbidden_minors_rnd(graphs, tw, tn):
     forbidden_minors = []
 
     for i, graph in enumerate(graphs):
-        # print("Processing graph", i+1, "out of", len(graphs))
+        print("Processing graph", i+1, "out of", len(graphs))
 
         if is_mfm(graph, tw):
             forbidden_minors.append(graph)
@@ -259,18 +259,21 @@ def is_mfm(graph, tw):
         temp_graph = graph.copy()
         temp_graph.remove_node(node)
         if max(1, max(len(u) - 1 for u in quick_bb(temp_graph))) >= tw:
+            # is_mfm(temp_graph, tw)
             return False
 
     for edge in graph.edges:
         temp_graph = graph.copy()
         temp_graph.remove_edge(*edge)
         if max(1, max(len(u) - 1 for u in quick_bb(temp_graph))) >= tw:
+            # is_mfm(temp_graph, tw)
             return False
 
     for edge in graph.edges:
         temp_graph = graph.copy()
         temp_graph = contracted_edge(temp_graph, edge)
         if max(1, max(len(u) - 1 for u in quick_bb(temp_graph))) >= tw:
+            # is_mfm(temp_graph, tw)
             return False
 
     return True

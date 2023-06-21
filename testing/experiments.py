@@ -146,3 +146,26 @@ def conn_check_pruning():
     plt.tight_layout()
     plt.show()
 
+
+def mfm_analysis_aes_vs_abs():
+    analysis_times = [724.6, 30.7]
+    min_fm_found = [0.35, 0.28]
+    method_labels = ['AEC Analysis', 'ABS Analysis']
+
+    fig, ax1 = plt.subplots()
+
+    ax1.bar(method_labels, analysis_times, color='tab:blue')
+    ax1.set_ylabel('Analysis Time on Average (sec)')
+    ax1.set_ylim(0, max(analysis_times) * 1.2)
+
+    ax2 = ax1.twinx()
+    ax2.plot(method_labels, min_fm_found, marker='o', color='tab:red')
+    ax2.set_ylabel('MFMs Found on Average')
+    ax2.set_ylim(0, max(min_fm_found) * 1.2)
+
+    plt.title('AEC vs. ABS, Performance Comparison')
+    ax1.set_xlabel('Approaches')
+    ax1.legend(['Analysis Time'], loc='upper left')
+    ax2.legend(['MFMs Found'], loc='upper right')
+
+    plt.show()
