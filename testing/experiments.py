@@ -169,3 +169,30 @@ def mfm_analysis_aes_vs_abs():
     ax2.legend(['MFMs Found'], loc='upper right')
 
     plt.show()
+
+
+def sampling_cover():
+    sample_size = 2000000
+    nr_vertices = list(range(20))
+    a001349 = [
+        1, 1, 1, 2, 6, 21, 112, 853, 11117, 261080,
+        11716571, 1006700565, 164059830476, 50335907869219,
+        29003487462848061, 31397381142761241960, 63969560113225176176277,
+        245871831682084026519528568, 1787331725248899088890200576580,
+        24636021429399867655322650759681644
+    ]
+
+    cover = []
+    for value in a001349:
+        if sample_size >= value:
+            cover.append(100)
+        else:
+            cover.append((sample_size / value) * 100)
+
+    plt.plot(nr_vertices, cover, marker='o')
+    plt.xlabel('Number of Vertices')
+    plt.ylabel('Coverage (%)')
+    plt.title('Feasible Sampling Coverage \n of Existing Connected Non-Isomorphic Graphs')
+    plt.xticks(nr_vertices)
+    plt.show()
+

@@ -41,6 +41,7 @@ def main():
     # avg_runs_until_minor()
     # conn_check_pruning()
     # mfm_analysis_aes_vs_abs()
+    # sampling_cover()
 
 
 def load_database():
