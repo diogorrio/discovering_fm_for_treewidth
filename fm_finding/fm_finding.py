@@ -1,11 +1,7 @@
 import sys
 
-import networkx as nx
 import numpy as np
-from itertools import combinations
-import matplotlib.pyplot as plt
 import getpass
-from networkx.algorithms.approximation import treewidth_min_fill_in
 from networkx.algorithms.minors import contracted_edge
 
 from fm_finding.tw_quickbb import quick_bb

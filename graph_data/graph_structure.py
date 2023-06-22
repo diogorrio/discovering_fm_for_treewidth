@@ -1,6 +1,5 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-from pyvis.network import Network
 
 """
 Manual connected graph generation, based on sketch codes from @khakhalin

@@ -1,8 +1,5 @@
-import networkx as nx
-from networkx.algorithms.approximation import treewidth_min_fill_in
-
-from fm_finding.fm_finding import FMFinding, password, start_db
-from graph_data.db_structure import create_db, create_table, retrieve_entries
+from fm_finding.fm_finding import FMFinding, start_db
+from graph_data.db_structure import create_db, create_table
 from testing.experiments import *
 
 
@@ -30,7 +27,7 @@ def main():
     # For F(5)
     fm_f5 = FMFinding("F(5)")
     # fm_f5.combinatorial_enumeration(7)
-    # TODO: fm_f5.find_best_ratio(10, 10000, 0, 1, 0.025)
+    # fm_f5.find_best_ratio(10, 10000, 0, 1, 0.025)
     # fm_f5.random_sampling(8, 0.925, 2000000)
 
     # Testing

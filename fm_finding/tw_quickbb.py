@@ -1,5 +1,4 @@
 import collections
-import sys
 
 """
 QuickBB Algorithm used for determining the exact treewidth of any given graph
