@@ -100,11 +100,10 @@ def draw_graphs(graphs):
 
 
 def draw_graphs_rnd(graphs):
-    # instances_to_draw = [1, 4, 31]
     for i, graph in enumerate(graphs):
 
         print(list(graph.edges()))
-        # if i+1 in instances_to_draw:
+
         # pos = nx.circular_layout(graph)
         # pos = nx.spring_layout(graph)
         pos = nx.kamada_kawai_layout(graph)
