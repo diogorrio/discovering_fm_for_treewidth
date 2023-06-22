@@ -1,0 +1,45 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[sorting=none]{biblatex}
+\addbibresource{references.bib}
+
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{caption}
+\captionsetup[figure]{font=small}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{
+    top=3cm,
+    bottom=3cm,
+ }
+
+\usepackage{subfigure}
+\usepackage{float}
+
+\usepackage{setspace}
+\usepackage{lipsum}
+
+\usepackage{multicol}
+\setlength{\columnsep}{1cm}
+
+\begin{document}
+
+\input{Sections/-1_TitlePage}
+\begin{multicols}{2}
+\input{Sections/0_Abstract}
+\input{Sections/1_Introduction}
+\input{Sections/2_Methods}
+\input{Sections/3_Experiments}
+\input{Sections/4_Results}
+\input{Sections/5_Discussion}
+\input{Sections/6_Conclusion}
+\newpage
+\printbibliography 
+\input{Sections/Appendix}
+\end{multicols}
+
+\end{document}

@@ -1,0 +1,42 @@
+\section{Introduction}
+
+\subsection{Contextualization} 
+Before proceeding, it makes sense to define one of the main concepts of this thesis: treewidth. Formally, given an undirected graph $G=(V,E)$, a tree decomposition of $G$ is a pair $(T,X)$, where $T$ represents a tree and $X={X_i|i\in V(T)}$ is a set of subsets of $V$, denominated bags. This must satisfy the following conditions:
+
+1. Every vertex $i \in V$ is contained in, at least, one bag $X_i$\par
+2. For every edge $(i,j) \in E$, there exists a bag $X_k$ that contains both $i$ and $j$\par
+3. For every vertex $i \in V$, the bags containing $i$ induce a connected subtree in $T$
+
+The treewidth of a graph $G$ is defined as the minimum size of the largest bag \textit{minus} one over all the possible tree decompositions of $G$. It is the smallest integer $k$ such that there exists a tree decomposition with bags of size at most $k+1$.
+
+There are records of the existence of around 90 to 100 minimal forbidden minors in $F(4)$. Such a list was given by Sanders in his thesis \cite{sanders1996}. This has, however, become unavailable as the years went on. Nowadays the list is no longer accessible and it was never proven whether Sanders' list was exhaustive. What remains known is that a finite limit does exist \cite{robertson2004wagners}. As a starting point, it has been proven the sets $F(1)$, $F(2)$, and $F(3)$ are fully enumerated \cite{bodlaender1988} \cite{aarnborg1990}. For $k>3$, that is not the case, which is precisely where the foundation of this thesis is held.
+
+The importance of this task lies in the possibility of drawing meaningful conclusions about the computational time of NP-hard problems, by analyzing the treewidth of a given graph. Moreover, if an extremely fast minor-checking algorithm is developed and access to the complete $F(k)$ is widely available, researchers may be able to check whether the treewidth is at most k, faster than using an exact algorithm. Ultimately, $F(k)$ can help understand 'why' a graph has certain treewidth, which is mathematically interesting.
+
+\subsection{Thesis Outline}
+This project is aimed to develop an algorithm or a series of them capable of discovering roughly 90 to 100 minimal forbidden minors in $F(4)$. Subsequently, the same methods will be applied to $F(5)$, to scout whether an initial list can be found there. These sets are characterized by the concept of treewidth.
+
+The treewidth of a graph is essentially a parameter that describes 'how far that graph is from being a tree'. This is quite important in algorithmic graph theory, as it allows NP-hard problems to be solved in polynomial time, and even periodically in linear time. That is, of course, if the treewidth of the graphs in question is bounded (or small). This makes understanding whether a graph has or does not have high treewidth fundamental.
+
+Graphs of bounded treewidth have a finite set of forbidden minors \cite{robertson2004wagners}. A minor is a sub-graph that is obtainable by deleting vertices and edges and contracting edges. If a graph has treewidth at most $k$, a set $F(k)$ characterizes the treewidth of said graph, in the following sense: to check whether any graph has treewidth at most $k$, it suffices to guarantee that it has none of the graphs in $F(k)$ as a minor. 
+
+In addition, given that it is only known that $F(k)$ is finite, it would be an interesting (and extremely challenging!) research outcome if the filled $F(4)$ was hypothesized to be exhaustive. 
+
+The algorithmic challenge comprises generating valid graphs (i.e. connected graphs that are checked for isomorphism either upfront or upon their addition to the database), followed by searching the generated space. The focus is on graphs with treewidth $k+1$, which is a necessary characteristic of the minimal forbidden minors in $F(k)$. By applying efficient search-space pruning techniques, pre-processing, exact treewidth solvers, and connectivity and isomorphism checks, this condition can be met.
+
+In short, this thesis explores the nature of the algorithms that allow the generation of graphs. Similarly, relevant pruning techniques may be applied, looking to significantly reduce the time spent searching the space. Different tools were tested, not always in the same environment or language. The goal regards avoiding run and memory time errors when filling $F(4)$ and $F(5)$. A MySQL database structure is also implemented to provide the possibility of sharing the results obtained by this research. 
+
+\subsection{Problem Statement }
+Given the lack of availability of enumerated minimal forbidden minors for treewidth 4 and above, could an efficient collection of algorithmic approaches be developed to both find those forbidden minors, as well as make them widely accessible?
+
+\subsubsection{Research Questions}
+Here are some of the questions the research aims to address:
+
+1. How efficient can algorithms that focus on discovering a list of forbidden minors for $F(4)$ be?
+
+2. How can the list of found forbidden minors be communicated to the community, in a verifiable way?
+
+3. Is there any evidence that this list for $F(4)$ is exhaustive?
+
+4. Can the same algorithmic techniques be used to produce a (non-exhaustive) list for $F(5)$?
+
