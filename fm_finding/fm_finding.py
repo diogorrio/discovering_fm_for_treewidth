@@ -102,25 +102,36 @@ class FMFinding:
             self.table_name = 'fm_in_f4'
             self.min_nr_minors = 90
             self.max_nr_minors = 100
-        # TODO: TBD: nr_minors in f5
         elif self.fm_type == "F(5)":
             self.treewidth = 6
             self.table_name = 'fm_in_f5'
             self.min_nr_minors = 0
-            self.max_nr_minors = 0
+            self.max_nr_minors = 15
 
-    # All these methods might justify their own class, if I decide to have different ones to compare
+    def graph_deconstruction(self):
+        # From already found mfms
+        retrieved, n_retrieved = retrieve_entries(self.table_name, 'forbidden_minors', 'localhost', 'root', password)
 
-    def tree_decompose(self):
-        return self
+        # From complete graphs
+        complete_graphs = []
+        for i in range(1, 20):
+            crt_k_i = nx.complete_graph(i)
+            complete_graphs.append(crt_k_i)
 
-    def recursive_construction(self):
-        return self
+        min_forbidden_minors = find_minimal_forbidden_minors_dec(n_retrieved, self.treewidth, self.table_name)
+
+        draw_graphs_rnd(min_forbidden_minors)
+
+        print("Graph deconstruction process finished.")
+        print("This outputs", len(min_forbidden_minors),
+              "minimal forbidden minors, out of the established", self.max_nr_minors, "at most",
+              "for the set", self.fm_type)
 
     def combinatorial_enumeration(self, nr_v):
         nr_vertices = nr_v
         # For F(n), the tw has to be n+1
         all_graphs = gen_connected_graphs_with(nr_vertices)
+
         min_forbidden_minors = find_minimal_forbidden_minors(all_graphs, self.treewidth, self.table_name)
 
         draw_graphs(min_forbidden_minors)
@@ -229,7 +240,7 @@ def find_minimal_forbidden_minors_rnd(graphs, tw, tn):
     forbidden_minors = []
 
     for i, graph in enumerate(graphs):
-        print("Processing graph", i+1, "out of", len(graphs))
+        # print("Processing graph", i+1, "out of", len(graphs))
 
         if is_mfm(graph, tw):
             forbidden_minors.append(graph)
@@ -251,6 +262,32 @@ def find_minimal_forbidden_minors_rnd(graphs, tw, tn):
     return forbidden_minors
 
 
+def find_minimal_forbidden_minors_dec(graphs, tw, tn):
+    forbidden_minors = []
+
+    for i, graph in enumerate(graphs):
+        # print("Processing graph", i+1, "out of", len(graphs))
+
+        if is_mfm_aec(graph, tw):
+            forbidden_minors.append(graph)
+
+            edge_list_graph = list(graph.edges())
+
+            # if start_db:
+            #     if not is_isomorphic(graph, tn):
+            #         # Edges representation turned to string to be added to database
+            #         graph_as_str = "[" + ", ".join([str(edge) for edge in edge_list_graph]) + "]"
+            #         insert_fm(graph_as_str, tn, 'forbidden_minors', 'localhost', 'root', password)
+            #     else:
+            #         print("This found minimal forbidden minor was isomorphic to one already on the database:")
+            #         print(edge_list_graph)
+            #         print("Skipping...")
+
+    print("> There were", len(forbidden_minors), "minimal forbidden minors found for treewidth", tw)
+
+    return forbidden_minors
+
+
 def is_mfm(graph, tw):
     if max(1, max(len(u) - 1 for u in quick_bb(graph))) != tw:
         return False
@@ -259,21 +296,46 @@ def is_mfm(graph, tw):
         temp_graph = graph.copy()
         temp_graph.remove_node(node)
         if max(1, max(len(u) - 1 for u in quick_bb(temp_graph))) >= tw:
-            # is_mfm(temp_graph, tw)
             return False
 
     for edge in graph.edges:
         temp_graph = graph.copy()
         temp_graph.remove_edge(*edge)
         if max(1, max(len(u) - 1 for u in quick_bb(temp_graph))) >= tw:
-            # is_mfm(temp_graph, tw)
             return False
 
     for edge in graph.edges:
         temp_graph = graph.copy()
         temp_graph = contracted_edge(temp_graph, edge)
         if max(1, max(len(u) - 1 for u in quick_bb(temp_graph))) >= tw:
-            # is_mfm(temp_graph, tw)
+            return False
+
+    return True
+
+
+def is_mfm_aec(graph, tw):
+    if max(1, max(len(u) - 1 for u in quick_bb(graph))) != tw:
+        return False
+
+    for node in graph.nodes:
+        temp_graph = graph.copy()
+        temp_graph.remove_node(node)
+        is_mfm_aec(temp_graph, tw)
+        if max(1, max(len(u) - 1 for u in quick_bb(temp_graph))) >= tw:
+            return False
+
+    for edge in graph.edges:
+        temp_graph = graph.copy()
+        temp_graph.remove_edge(*edge)
+        is_mfm_aec(temp_graph, tw)
+        if max(1, max(len(u) - 1 for u in quick_bb(temp_graph))) >= tw:
+            return False
+
+    for edge in graph.edges:
+        temp_graph = graph.copy()
+        temp_graph = contracted_edge(temp_graph, edge)
+        is_mfm_aec(temp_graph, tw)
+        if max(1, max(len(u) - 1 for u in quick_bb(temp_graph))) >= tw:
             return False
 
     return True
@@ -314,4 +376,3 @@ def ratio_tw_per_gen(graphs, nr_v, edge_p, tw):
           "vertices and an edge probability of", edge_p, "is", ratio)
 
     return ratio
-

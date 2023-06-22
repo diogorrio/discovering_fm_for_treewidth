@@ -23,9 +23,9 @@ def main():
 
     # For F(4)
     fm_f4 = FMFinding("F(4)")
-    # fm_f4.combinatorial_enumeration(7)
+    # fm_f4.combinatorial_enumeration(5)
     # fm_f4.find_best_ratio(8, 10000, 0, 1, 0.025)
-    # fm_f4.random_sampling(9, 0.675, 50000)
+    # fm_f4.random_sampling(8, 0.8, 1000)
 
     # For F(5)
     fm_f5 = FMFinding("F(5)")
