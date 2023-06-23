@@ -44,6 +44,7 @@ If willing to use the database to test the algorithms:
 5. If you choose 4b), this is how you run the code:
     a) On PyCharm:
         << 'Edit Configurations...' >>
+        << 'Add new (Python) configuration' >>
         << Type your local path to fm_finding\fm_utils\__init__.py on 'script path' >>
         << Select your Python interpreter >>
         << Have 'Add content roots to PYTHONPATH' and 'Add source roots to PYTHONPATH' selected >>
@@ -56,6 +57,11 @@ The program will ask for your server credentials to gain access to modify the da
 - The program has both the code and the results of this thesis. The found minimal forbidden minors are available under 
 various formats: .sql, .csv and .txt. 
 - In addition, images are also provided under docs/results.
+- If you're using PyCharm, on 'Edit Configurations...', selecting the option 'run with Python console' under 
+'Execution' will provide you helpful feedback on what issues may arise.
+- You have the option of opening your database on the lateral menu 'Database', which eases manual DB visualization.
+- The program is mostly modifiable on the '\__init\__.py' file, uncomment the functions you want to execute on 'main()' 
+to see some practical outcomes.
 
 
 ### Version Log
