@@ -24,7 +24,34 @@ graph theory and its possible applications in solving complex computational prob
 
 
 ### Run Instructions
-// Empty.
+#### From scratch
+```
+If willing to use the database to test the algorithms:
+
+1. Have a MySQL distribution installed.
+2. Start a local server, by doing one of three things:
+    a) Searching for the application 'Services' on Windows and starting MySQL80.
+    b) Using the installed MySQL workbench to start it.
+    c) Typing:
+        net start MySQL80
+    Don't forget to stop the server when you are done.
+        net stop MySQL80
+3. Assure the login credentials are set accordingly
+4. Make use of the database functionalities.
+    a) If you want access to the already found minimal forbidden minors:   
+        Load the provided database file(s) under docs/results/sql on the server.
+    b) If you don't need the data and only want to see the workings of the program:
+        Simply run the code, it will create a database from scratch.
+5. If you choose 4b), this is how you run the code:
+    a) On PyCharm:
+        << 'Edit Configurations...' >>
+        << Type your local path to fm_finding\fm_utils\__init__.py on 'script path' >>
+        << Select your Python interpreter >>
+        << Have 'Add content roots to PYTHONPATH' and 'Add source roots to PYTHONPATH' selected >>
+        You are good to run the program. 
+        
+The program will ask for your server credentials to gain access to modify the database in question.
+```
 
 ### Version Log
 V1. Build the initial structure of the project.\
@@ -42,4 +69,5 @@ V10. Experiment design.\
 V11. Upload the minimal forbidden minors found as a database/text file, as well as images.
 
 ## LICENSE
-See [LICENSE](LICENSE).
+See [LICENSE](LICENSE).\
+Diogo Rio © UM 2023 
