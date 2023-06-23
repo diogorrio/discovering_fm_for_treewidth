@@ -32,7 +32,7 @@ If willing to use the database to test the algorithms:
 2. Start a local server, by doing one of three things:
     a) Searching for the application 'Services' on Windows and starting MySQL80.
     b) Using the installed MySQL workbench to start it.
-    c) Typing:
+    c) Typing on the approapriate terminal / command line:
         net start MySQL80
     Don't forget to stop the server when you are done.
         net stop MySQL80
