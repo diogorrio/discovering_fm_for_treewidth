@@ -24,7 +24,6 @@ graph theory and its possible applications in solving complex computational prob
 
 
 ### Run Instructions
-#### From scratch
 ```
 If willing to use the database to test the algorithms:
 
@@ -36,7 +35,7 @@ If willing to use the database to test the algorithms:
         net start MySQL80
     Don't forget to stop the server when you are done.
         net stop MySQL80
-3. Assure the login credentials are set accordingly
+3. Assure the login credentials are set accordingly.
 4. Make use of the database functionalities.
     a) If you want access to the already found minimal forbidden minors:   
         Load the provided database file(s) under docs/results/sql on the server.
@@ -52,6 +51,12 @@ If willing to use the database to test the algorithms:
         
 The program will ask for your server credentials to gain access to modify the database in question.
 ```
+
+### Notes
+- The program has both the code and the results of this thesis. The found minimal forbidden minors are available under 
+various formats: .sql, .csv and .txt. 
+- In addition, images are also provided under docs/results.
+
 
 ### Version Log
 V1. Build the initial structure of the project.\
